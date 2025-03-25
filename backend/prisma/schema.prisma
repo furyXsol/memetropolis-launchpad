@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model KeyValueMapping {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("key_value_mappings")
+}
+
+model Token {
+  id                   String  @id @default(uuid())
+  address              String  @db.VarChar(44)
+  name                 String
+  banner               String?
+  symbol               String
+  decimals             Int
+  chain_id             Int
+  current_holder_count BigInt
+  transfer_count       BigInt
+  mint_count           BigInt
+  burn_count           BigInt
+  total_supply         String
+  total_minted         String
+  owner_account_id     String
+  creation_timestamp   Int
+  price                String
+  price_in_decimal     Decimal @db.Decimal(60, 18)
+  image                String?
+  description          String? @db.Text
+  token_sold           Decimal @default("0") @db.Decimal(60, 18)
+  is_funding_finished  Boolean @default(false)
+  sales_ratio          Decimal? @default("80") @db.Decimal(10, 2)
+  reserved_ratio       Decimal? @default("0") @db.Decimal(10, 2)
+  liquidity_ratio      Decimal? @default("20") @db.Decimal(10, 2)
+  launch_date_timestamp Int? @default(0)
+  limit_per_user_in_decimal   Decimal? @default("0") @db.Decimal(60, 18)
+  is_chat_pinned  Boolean @default(false)
+  meta String @default("")
+  volume              String @default("0")
+
+  socials Json?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  owner Account @relation(fields: [owner_account_id], references: [id])
+
+  transfer_events    TransferEvent[]
+  account_balances   AccountBalance[]
+  purchase_histories PurchaseHistory[]
+  replies            Reply[]
+
+  @@unique([address, chain_id])
+  @@map("tokens")
+}
+
+model Account {
+  id              String  @id @default(uuid())
+  address         String  @unique @db.VarChar(44)
+  name            String  @default("")
+  username        String  @default("")
+  image           String  @default("")
+  bio             String  @default("")
+  tier            Int     @default(0)
+  alpha_tester_id String?
+
+  socials Json?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  account_balances   AccountBalance[]
+  purchase_histories PurchaseHistory[]
+  created_tokens     Token[]
+  replies            Reply[]
+  reply_likes        ReplyLike[]
+
+  @@map("accounts")
+}
+
+model Reply {
+  id         String @id @default(uuid())
+  content    String
+  thread_id  String
+  account_id String
+
+  thread  Token   @relation(fields: [thread_id], references: [id])
+  account Account @relation(fields: [account_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  reply_likes ReplyLike[]
+
+  @@map("replies")
+}
+
+model ReplyLike {
+  id         String  @id @default(uuid())
+  reply_id   String
+  account_id String
+  liked      Boolean @default(true)
+
+  reply   Reply   @relation(fields: [reply_id], references: [id])
+  account Account @relation(fields: [account_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([reply_id, account_id])
+  @@map("reply_likes")
+}
+
+model AccountBalance {
+  id                String  @id @default(uuid())
+  account_id        String
+  token_id          String
+  amount            String
+  amount_in_decimal Decimal @db.Decimal(60, 18)
+  block_number      BigInt
+  block_timestamp   BigInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  account Account @relation(fields: [account_id], references: [id])
+  token   Token   @relation(fields: [token_id], references: [id])
+
+  @@unique([account_id, token_id])
+  @@map("account_balances")
+}
+
+model TransferEvent {
+  id                String  @id @default(uuid())
+  chain_id          Int
+  hash              String
+  token_id          String
+  amount            String
+  amount_in_decimal Decimal @db.Decimal(60, 18)
+  from              String  @db.VarChar(44)
+  to                String  @db.VarChar(44)
+  block_number      BigInt
+  block_timestamp   BigInt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  token Token @relation(fields: [token_id], references: [id])
+
+  @@unique([hash, chain_id])
+  @@map("transfer_events")
+}
+
+model SolanaCreateLaunchpadEvent {
+  id           String   @id @default(uuid())
+  program_id   String
+  signature    String
+  event_index  Int
+  block_time   BigInt
+  slot         BigInt
+  creator      String
+  meme_mint    String
+  payment_mint String
+  min_invest   BigInt
+  max_invest   BigInt
+  token_price  BigInt
+  start_time   BigInt
+  end_time     BigInt
+  created_at   DateTime @default(now())
+
+  @@unique([program_id, signature, event_index])
+  @@map("solana_create_launchpad_events")
+}
+
+model SolanaLaunchpadEvent {
+  id           String   @id @default(uuid())
+  program_id   String
+  signature    String
+  event_index  Int
+  block_time   BigInt
+  slot         BigInt
+  trader       String
+  event_type   String
+  meme_mint    String
+  payment_mint String
+  amount       BigInt
+  created_at   DateTime @default(now())
+
+  @@unique([program_id, signature, event_index])
+  @@map("solana_launchpad_events")
+}
+
+model PurchaseHistory {
+  id                     String  @id @default(uuid())
+  chain_id               Int
+  account_id             String
+  token_id               String
+  source_eid             String
+  amount                 String
+  amount_in_decimal      Decimal @db.Decimal(60, 18)
+  block_number           BigInt
+  block_timestamp        BigInt
+  hash                   String
+  type                   String
+  eth_amount             String
+  eth_amount_in_decimal  Decimal @db.Decimal(60, 18)
+  eth_amount_in_usd      Decimal @db.Decimal(60, 2)
+  token_price            String
+  token_price_in_decimal Decimal @db.Decimal(60, 18)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  account Account @relation(fields: [account_id], references: [id])
+  token   Token   @relation(fields: [token_id], references: [id])
+
+  @@unique([hash, chain_id])
+  @@map("purchase_histories")
+}
+
+model NewsletterUser {
+  id    String @id @default(uuid())
+  email String
+
+  @@map("newsletter_users")
+}

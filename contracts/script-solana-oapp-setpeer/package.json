@@ -1,0 +1,36 @@
+{
+  "name": "memetropolis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "print-pda": "npx ts-node 00_print_pda.ts",
+    "01-init-oapp": "npx ts-node 01_init_oapp.ts",
+    "02-set-peer": "npx ts-node 02_set_peer.ts",
+    "03-create-global-config": "npx ts-node 03_create_global_config.ts",
+    "04-create-token": "npx ts-node 04_create_token.ts",
+    "05-get-global-info": "npx ts-node 05_get_global_info.ts",
+    "quote": "npx ts-node 08_quote1.ts",
+    "send": "npx ts-node 06-send.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@layerzerolabs/lz-solana-sdk-v2": "2.3.44",
+    "@layerzerolabs/lz-v2-utilities": "^3.0.67",
+    "@metaplex-foundation/js": "^0.20.1",
+    "@metaplex-foundation/mpl-token-metadata": "^2.11.0",
+    "@solana/spl-token": "^0.4.8",
+    "@solana/web3.js": "^1.95.3",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.5",
+    "borsh": "^2.0.0",
+    "@metaplex-foundation/umi": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

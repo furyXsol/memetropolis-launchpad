@@ -1,0 +1,782 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/health/db-health": {
+      "get": {
+        "operationId": "HealthController_dbCheck",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/token/list": {
+      "get": {
+        "operationId": "TokenController_getTokenList",
+        "summary": "Get token list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns token list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenListOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Token"
+        ]
+      }
+    },
+    "/token/list/{category}": {
+      "get": {
+        "operationId": "TokenController_getTokenListByCategory",
+        "summary": "Get token list by category",
+        "parameters": [
+          {
+            "name": "category",
+            "required": true,
+            "in": "path",
+            "description": "hot | new | top",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns token list by category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenListOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Token"
+        ]
+      }
+    },
+    "/transaction/recent": {
+      "get": {
+        "operationId": "TransactionController_getRecentTransactions",
+        "summary": "Sign in with signature",
+        "parameters": [
+          {
+            "name": "chainId",
+            "required": true,
+            "in": "query",
+            "description": "Chain id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tokenAddress",
+            "required": true,
+            "in": "query",
+            "description": "Token Address",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Recent Transactions from Token address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionListOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Transaction"
+        ]
+      }
+    },
+    "/auth": {
+      "get": {
+        "operationId": "AuthController_auth",
+        "summary": "Sign in with signature",
+        "parameters": [
+          {
+            "name": "publicAddress",
+            "required": true,
+            "in": "query",
+            "description": "Wallet address",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "signature",
+            "required": true,
+            "in": "query",
+            "description": "Signature signed with wallet",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success with JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/auth/update": {
+      "post": {
+        "operationId": "AuthController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update profile with signature",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProfileOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/account/top-traders": {
+      "get": {
+        "operationId": "AccountController_getTopTraders",
+        "summary": "Get Top Traders",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get Recent Transactions from Token address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraderListOutputDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "MEMETROPOLIS Backend",
+    "description": "MemeTropolis Backend Description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "memetropolis",
+      "description": ""
+    },
+    {
+      "name": "Auth",
+      "description": ""
+    },
+    {
+      "name": "Token",
+      "description": ""
+    },
+    {
+      "name": "Transaction",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {
+      "TokenDto": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "number"
+          },
+          "currentHolderCount": {
+            "type": "string"
+          },
+          "transferCount": {
+            "type": "string"
+          },
+          "mintCount": {
+            "type": "string"
+          },
+          "burnCount": {
+            "type": "string"
+          },
+          "totalSupply": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "address",
+          "chainId",
+          "name",
+          "symbol",
+          "decimals",
+          "currentHolderCount",
+          "transferCount",
+          "mintCount",
+          "burnCount",
+          "totalSupply"
+        ]
+      },
+      "TokenListOutputDto": {
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenDto"
+            }
+          }
+        },
+        "required": [
+          "tokens"
+        ]
+      },
+      "TransactionDto": {
+        "type": "object",
+        "properties": {
+          "chainId": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "tokenAmount": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "sourceEid": {
+            "type": "string"
+          },
+          "blockTimestamp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chainId",
+          "type",
+          "tokenAmount",
+          "hash",
+          "sourceEid",
+          "blockTimestamp"
+        ]
+      },
+      "TransactionListOutputDto": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionDto"
+            }
+          }
+        },
+        "required": [
+          "transactions"
+        ]
+      },
+      "SignInOutputDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessToken"
+        ]
+      },
+      "UpdateProfileInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateProfileOutputDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "action": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "action",
+          "message"
+        ]
+      },
+      "TraderDto": {
+        "type": "object",
+        "properties": {
+          "chainId": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "tokenAmount": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "sourceEid": {
+            "type": "string"
+          },
+          "blockTimestamp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chainId",
+          "type",
+          "tokenAmount",
+          "hash",
+          "sourceEid",
+          "blockTimestamp"
+        ]
+      },
+      "TraderListOutputDto": {
+        "type": "object",
+        "properties": {
+          "traders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TraderDto"
+            }
+          }
+        },
+        "required": [
+          "traders"
+        ]
+      }
+    }
+  }
+}

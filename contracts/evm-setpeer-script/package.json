@@ -1,0 +1,22 @@
+{
+  "name": "oapp-script",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "setpeer": "npx ts-node setPeer.ts",
+    "quote": "npx ts-node quote.ts",
+    "send": "npx ts-node send.ts",
+    "getinfo": "npx ts-node getinfo.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "viem": "^2.23.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
